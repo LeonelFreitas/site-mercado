@@ -1,0 +1,14 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "@next/next/no-img-element": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["src/controllers/**", "src/routes/**", "src/middlewares/**", "src/*.js"],
+      "rules": {
+        "@typescript-eslint/no-require-imports": "off"
+      }
+    }
+  ]
+}
