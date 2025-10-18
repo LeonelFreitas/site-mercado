@@ -1,120 +1,172 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 type Product = {
-  id: number;
-  name: string;
-  image: string;
-  price: string;
-  unit: string;
-  details?: string;
-  offer?: boolean;
-  oldPrice?: string;
-  discount?: string;
+  coditem: number;
+  descricao: string;
+  unidade: string;
+  fotoUrl: string | null;
+  preco: string | null;
 };
 
-const products: Product[] = [
-  {
-    id: 1,
-    name: "Refresco Ativ Plus 290ml Guaraná E Açaí",
-    image: "https://produtos.vipcommerce.com.br/250x250/eecbe536-a23b-4b65-93be-cbb33eca4002.jpg",
-    price: "R$ 0,69",
-    unit: "/un",
-    offer: true,
-    oldPrice: "R$ 0,99",
-    discount: "30% OFF",
-  },
-  {
-    id: 2,
-    name: "Leite Condensado Italac 395g Semi Desnatado",
-    image: "https://produtos.vipcommerce.com.br/250x250/a38a6924-baab-4486-9d97-fb875aa3badd.jpg",
-    price: "R$ 7,29",
-    unit: "/un",
-  },
-  {
-    id: 3,
-    name: "Refresco Ativ Plus 290ml Laranja E Acerola",
-    image: "https://produtos.vipcommerce.com.br/250x250/ead0c7e0-62e3-41b3-9194-3c39bf849d69.jpg",
-    price: "R$ 0,99",
-    unit: "/un",
-  },
-  {
-    id: 4,
-    name: "Refrigerante Coca Cola 200ml Zero",
-    image: "https://produtos.vipcommerce.com.br/250x250/bc19ae83-dfac-45a4-a4ef-684ec4b59613.jpg",
-    price: "R$ 1,69",
-    unit: "/un",
-  },
-  {
-    id: 5,
-    name: "Batata Lavada 500g (aproximadamente 3 Unidades)",
-    image: "https://produtos.vipcommerce.com.br/250x250/e5e8b938-07ed-4bdb-b2ae-4d58fb458cc5.jpg",
-    price: "R$ 3,49",
-    unit: "/500g",
-    details: "R$ 6,98/kg",
-  },
-  {
-    id: 6,
-    name: "Limão Taiti 200g (aproximadamente 2 Unidades)",
-    image: "https://produtos.vipcommerce.com.br/250x250/d3b7512b-5d2c-4636-aad8-03dc9c110318.jpg",
-    price: "R$ 1,40",
-    unit: "/200g",
-    details: "R$ 7,00/kg",
-  },
-];
-
 export function ProductShelf() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [imgLoaded, setImgLoaded] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    fetch("http://localhost:4000/promocoes/promocoes-ativas-detalhes")
+      .then((res) => res.json())
+      .then((data) => {
+        const produtosComPreco = data.map((produto: any) => ({
+          coditem: produto.coditem,
+          descricao: produto.descricao,
+          unidade: produto.unidade,
+          fotoUrl: produto.fotoUrl,
+          preco: produto.preco ?? null,
+        }));
+        setProducts(produtosComPreco);
+        // inicializa estado de imagens como false
+        const initialLoaded: Record<number, boolean> = {};
+        produtosComPreco.forEach((p: Product) => (initialLoaded[p.coditem] = false));
+        setImgLoaded(initialLoaded);
+        setLoading(false);
+      })
+      .catch(() => {
+        setProducts([]);
+        setLoading(false);
+      });
+  }, []);
+
+  function handleImgLoad(coditem: number) {
+    setImgLoaded((s) => ({ ...s, [coditem]: true }));
+  }
+
+  function formatPrice(preco: string | null) {
+    if (!preco) return null;
+    const n = Number(preco);
+    if (Number.isNaN(n)) return null;
+    return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  }
+
+  // novo: retorna partes do preço para estilizar (ex: R$, 6.750, 75)
+  function formatPriceParts(preco: string | null) {
+    if (!preco) return null;
+    const n = Number(preco);
+    if (Number.isNaN(n)) return null;
+    const [intPart, decPart] = n.toFixed(2).split(".");
+    const intFormatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return { currency: "R$", integer: intFormatted, decimals: decPart };
+  }
+
+  function cleanDescricao(desc: string) {
+    const s = (desc || "").trim();
+    // se começa com 4 ou mais dígitos (código) remove prefixo numérico + separadores até o texto
+    if (/^\d{4,}[\d\.\-_\s\/]*[-–—:]?\s*/.test(s)) {
+      return s.replace(/^\d{4,}[\d\.\-_\s\/]*[-–—:]?\s*/, "").trim();
+    }
+    return s;
+  }
+
   return (
-    <section className="max-w-7xl mx-auto px-4 pb-16 pt-6 ">
-      <div className="flex items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800 text-left flex-1">Destaques</h2>
-        <a
-          href="#"
-          className="text-blue-900 font-medium flex items-center gap-1 hover:underline ml-4 whitespace-nowrap"
-          style={{ lineHeight: "1" }}
-        >
-          ver todos <span className="text-lg">&#8250;</span>
+    <section className="max-w-7xl mx-auto px-4 pb-16 pt-10">
+      <div className="flex items-center mb-6">
+        <h2 className="text-2xl md:text-3xl font-serif font-extrabold tracking-tight text-gray-800 flex-1">
+          PROMOÇÕES DO DIA
+        </h2>
+        <a href="#" className="text-blue-900 font-medium whitespace-nowrap hover:underline">
+          {/* ver todos <span className="text-lg">&#8250;</span> */}
         </a>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        {products.slice(0, 6).map((product) => (
-          <div
-            key={product.id}
-            className="bg-white rounded-2xl border border-gray-100 shadow-md flex flex-col items-center p-5 relative transition hover:shadow-lg"
-          >
-            {/* Ícone de lista */}
-            <button className="absolute top-3 right-3 text-gray-400 hover:text-blue-900">
-              <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="4" y="6" width="14" height="2" rx="1" />
-                <rect x="4" y="10" width="14" height="2" rx="1" />
-                <rect x="4" y="14" width="14" height="2" rx="1" />
-              </svg>
-            </button>
-            {/* Imagem */}
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-32 h-32 object-contain mb-2"
-              loading="lazy"
-            />
-            {/* Nome e Preço fixos */}
-            <div className="flex flex-col justify-between items-start w-full min-h-[70px] mb-1">
-              <div className="text-sm text-gray-700 font-medium leading-tight w-full text-left line-clamp-2">
-                {product.name}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-x-6 gap-y-10">
+        {loading ? (
+          // skeleton cards (aumentei a altura)
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 animate-pulse min-h-[360px]" />
+          ))
+        ) : (
+          products.map((product) => {
+            const priceParts = formatPriceParts(product.preco);
+            return (
+              <div
+                key={product.coditem}
+                className="group bg-white rounded-2xl border border-gray-100 shadow-md p-4 pb-5 relative transition-transform transform hover:-translate-y-1 hover:shadow-lg cursor-default flex flex-col min-h-[300px]"
+                role="article"
+                aria-label={cleanDescricao(product.descricao)}
+              >
+                {/* OFERTA badge */}
+                <span className="absolute top-3 left-3 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">
+                  OFERTA
+                </span>
+
+                {/* imagem */}
+                <div className="w-full flex items-center justify-center h-44 mb-4">
+                  {!imgLoaded[product.coditem] && (
+                    <div className="w-32 h-32 bg-gray-100 rounded-md overflow-hidden relative">
+                      <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 animate-[shimmer_1.2s_linear_infinite]" />
+                    </div>
+                  )}
+                  <img
+                    src={product.fotoUrl ?? "/placeholder.png"}
+                    alt={product.descricao}
+                    className={`max-w-32 max-h-32 object-contain transition-opacity duration-300 ${imgLoaded[product.coditem] ? "opacity-100" : "opacity-0"}`}
+                    onLoad={() => handleImgLoad(product.coditem)}
+                    loading="lazy"
+                    draggable={false}
+                  />
+                </div>
+
+                {/* nome (menor espaçamento abaixo) */}
+                <div className="mb-1">
+                  <div className="text-sm text-gray-700 font-medium leading-tight line-clamp-2 mb-0 uppercase">
+                    {cleanDescricao(product.descricao)}
+                  </div>
+                </div>
+
+                {/* preço (reduzi margem superior) */}
+                <div className="mt-1 flex items-end justify-between">
+                   <div className="flex flex-col">
+                    {priceParts ? (
+                      <div className="flex items-end gap-3">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-sm text-gray-600">{priceParts.currency}</span>
+                          <span className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-none">
+                            {priceParts.integer}
+                          </span>
+                          <sup className="text-base md:text-lg font-extrabold text-gray-900 -ml-1">
+                            {priceParts.decimals}
+                          </sup>
+                        </div>
+                        <div className="text-xs text-gray-500 uppercase mt-2">{product.unidade}</div>
+                      </div>
+                    ) : (
+                      <div className="text-sm text-gray-600 uppercase">{product.unidade}</div>
+                    )}
+                  </div>
+
+                </div>
               </div>
-              <div className="text-xl font-bold text-gray-900 mt-2 w-full text-left">
-                {product.price}
-                <span className="text-sm font-normal text-gray-600">{product.unit}</span>
-              </div>
-            </div>
-            {/* Detalhes */}
-            {product.details && (
-              <div className="text-xs text-gray-400 mb-1 w-full text-left">{product.details}</div>
-            )}
-            {/* Botão adicionar */}
-            <button className="mt-2 bg-blue-900 hover:bg-blue-800 text-white rounded-full w-11 h-11 flex items-center justify-center shadow-lg text-2xl absolute right-4 bottom-4 transition">
-              +
-            </button>
-          </div>
-        ))}
+            );
+          })
+        )}
       </div>
+
+      {/* shimmer keyframes para tailwind-free environments */}
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .animate-[shimmer_1.2s_linear_infinite] {
+          background: linear-gradient(90deg, #f3f3f3 0%, #e9e9e9 50%, #f3f3f3 100%);
+          background-size: 200% 100%;
+          animation: shimmer 1.2s linear infinite;
+        }
+        .max-w-28 { max-width: 7rem; } /* 112px */
+        .max-h-28 { max-height: 7rem; }
+      `}</style>
     </section>
   );
 }

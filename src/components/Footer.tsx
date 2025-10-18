@@ -1,98 +1,74 @@
 export function Footer() {
   return (
-    <footer className="w-full bg-red-600 text-white pt-10 pb-4">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
-        {/* Quem somos */}
-        <div>
-          <h3 className="font-bold mb-2">Quem somos</h3>
-          <p className="text-sm mb-2">
-            O <span className="font-semibold">Mercado Tomás Dias</span> nasceu em Maringá, distrito de Itatiaia, RJ, como um pequeno comércio familiar dedicado a atender a comunidade local com produtos de qualidade e atendimento próximo. Com o passar dos anos, o mercado cresceu, modernizou suas instalações e ampliou seu mix de produtos, mantendo sempre o compromisso com a tradição, confiança e o respeito aos clientes. Hoje, o Mercado Tomás Dias é referência na região, valorizando o relacionamento, a honestidade e o desenvolvimento local.
-          </p>
-          <a href="#" className="underline text-white text-sm hover:text-yellow-300">Clique aqui e saiba mais</a>
-        </div>
-        {/* Forma de Pagamento */}
-        <div>
-          <h3 className="font-bold mb-2">Forma de Pagamento</h3>
-          <p className="text-sm mb-2">
-            Aceitamos cartões de crédito, débito e vale alimentação.
-          </p>
-          <a href="#" className="underline text-white text-sm hover:text-yellow-300">Clique aqui e saiba mais</a>
-        </div>
-        {/* Institucional */}
-        <div>
-          <h3 className="font-bold mb-2">Institucional</h3>
-          <ul className="space-y-1 text-sm">
-            <li><a href="#" className="hover:underline">Quem somos</a></li>
-            <li><a href="#" className="hover:underline">Como comprar online</a></li>
-            <li><a href="#" className="hover:underline">Entregas</a></li>
-            <li><a href="#" className="hover:underline">Formas de Pagamento</a></li>
-            <li><a href="#" className="hover:underline">Perguntas Frequentes</a></li>
-            <li><a href="#" className="hover:underline">Fale Conosco</a></li>
-            <li><a href="#" className="hover:underline">Política de Privacidade</a></li>
-            <li><a href="#" className="hover:underline">Simulador de Frete</a></li>
-            <li><a href="#" className="hover:underline">Cartão Royal</a></li>
-            <li><a href="#" className="hover:underline">Trabalhe Conosco</a></li>
-            <li><a href="#" className="hover:underline">Política de Cookies</a></li>
-            <li><a href="#" className="hover:underline">Encartes</a></li>
-            <li><a href="#" className="hover:underline">SAC Royal Online</a></li>
-            <li><a href="#" className="hover:underline">Relatórios de transparência MTE</a></li>
-            <li><a href="#" className="hover:underline">Nossas Lojas</a></li>
-          </ul>
-        </div>
-        {/* Relacionamento com o Cliente */}
-        <div>
-          <h3 className="font-bold mb-2">Relacionamento com o Cliente</h3>
-          <ul className="space-y-1 text-sm">
-            <li>
-              <span className="inline-flex items-center gap-2">
-                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 2h12v12H2z" /></svg>
-                ouvidoria@mercadotomazdias.com.br
-              </span>
-            </li>
-            <li>
-              <span className="inline-flex items-center gap-2">
-                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 2h10v12H3z" /></svg>
-                (24) 4009-3342
-              </span>
-            </li>
-            <li>
-              <span className="inline-flex items-center gap-2">
-                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="8" cy="8" r="7" /></svg>
-                (24) 99307-0373
-              </span>
-            </li>
-          </ul>
-        </div>
-        {/* Redes Sociais */}
-        <div>
-          <h3 className="font-bold mb-2">Redes Sociais</h3>
-          <div className="flex gap-4 mt-2">
-            <a href="#" aria-label="Instagram">
-              <img src="/instagram.svg" alt="Instagram" className="w-8 h-8" />
-            </a>
-            <a href="#" aria-label="YouTube">
-              <img src="/youtube.svg" alt="YouTube" className="w-8 h-8" />
-            </a>
-            <a href="#" aria-label="Facebook">
-              <img src="/facebook.svg" alt="Facebook" className="w-8 h-8" />
-            </a>
+    <footer className="w-full bg-gradient-to-b from-red-600 to-red-700 text-white">
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div>
+            <h4 className="text-lg font-semibold mb-2">Mercado Tomás Dias</h4>
+            <p className="text-sm text-white/90 leading-relaxed">
+              Comércio local em Maringá (Itatiaia-RJ). Atendimento familiar, produtos selecionados e compromisso com a comunidade.
+            </p>
+            <div className="mt-4 text-xs text-white/80">
+              <div>CNPJ: <span className="font-medium tracking-wide">01.480.423/0001-19</span></div>
+              <div className="mt-1">Estrada Mauá Maromba, SN • Maringá • CEP 27553-000</div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold mb-2">Contato</h4>
+            <ul className="text-sm text-white/90 space-y-2">
+              <li>
+                <a href="mailto:ouvidoria@mercadotomazdias.com.br" className="hover:underline">
+                  ouvidoria@mercadotomazdias.com.br
+                </a>
+              </li>
+              <li className="leading-tight">(24) 4009-3342</li>
+              <li className="leading-tight">(24) 99307-0373</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold mb-2">Links úteis</h4>
+            <ul className="text-sm text-white/90 space-y-2">
+              <li><a href="#" className="hover:underline">Quem somos</a></li>
+              <li><a href="#" className="hover:underline">Formas de pagamento</a></li>
+              <li><a href="#" className="hover:underline">Fale conosco</a></li>
+              <li><a href="#" className="hover:underline">Política de privacidade</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold mb-2">Siga-nos</h4>
+            <div className="flex items-center gap-3 mt-2">
+              <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="3"/><path d="M17.5 6.5h.01"/></svg>
+              </a>
+              <a href="#" aria-label="YouTube" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 15l5.5-3L10 9v6z"/></svg>
+              </a>
+              <a href="#" aria-label="Facebook" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 2h-3a4 4 0 00-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 011-1h3z"/></svg>
+              </a>
+            </div>
+
+            <div className="mt-6">
+              <a href="#top" className="inline-block bg-white text-red-700 px-4 py-2 rounded shadow hover:opacity-95 text-sm">
+                Voltar ao topo
+              </a>
+            </div>
           </div>
         </div>
       </div>
-      {/* Informações legais */}
-      <div className="max-w-7xl mx-auto px-6 text-xs text-white mt-6 space-y-2">
-        <div>
-          <span className="font-semibold">Mercado Tomás Dias</span> &nbsp;|&nbsp;
-          CNPJ: <span className="tracking-wide">01.480.423/0001-19</span><br />
-          <span className="font-bold">Endereço:</span> Estrada Mauá Maromba, SN - Maringá, Itatiaia - RJ<br />
-          <span className="font-bold">CEP:</span> 27553-000 - Itatiaia/RJ
-        </div>
-        <div>
-          <span className="font-bold">MERCADO TOMÁS DIAS</span> é um canal de vendas on-line pelo qual você tem acesso aos nossos produtos, com <span className="underline">facilidade</span> para comprar de onde quiser; <span className="underline">conforto</span> ao agendar a entrega do seu pedido, com data e hora marcadas no endereço que indicar; e total <span className="underline">segurança</span>, com sistema e plataformas adequados para gerir sua compra e seus dados com absoluto sigilo.<br />
-          Preços, ofertas e condições exclusivas para internet e válidos durante o dia de hoje, podendo sofrer alteração sem prévia notificação. A compra de produtos com preços promocionais poderá ter sua quantidade limitada por compra. Em caso de divergência de valores no site, o valor válido é o do carrinho de compras. Fotos ilustrativas. Compras sujeitas à confirmação de estoque. Os preços e os produtos visualizados no site e aplicativo podem ser diferentes dos praticados em nossas lojas físicas. Os itens pesados possuem peso médio em suas descrições, pois o peso pode sofrer variação no momento da pesagem. Caso falte algum item, o mesmo não será cobrado.
-        </div>
-        <div>
-          Proibida a venda de bebidas alcoólicas para menores de idade, conforme Lei n.º 8069/90, art. 81, inciso II (Estatuto da Criança e do Adolescente).<br />
+
+      <div className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between text-xs text-white/80">
+          <div className="mb-2 md:mb-0">
+            © {new Date().getFullYear()} Mercado Tomás Dias — Todos os direitos reservados.
+          </div>
+          <div>
+            <span className="hidden md:inline">Desenvolvido por •</span>
+            <span className="ml-1 font-medium">Leonel Freitas</span>
+          </div>
         </div>
       </div>
     </footer>

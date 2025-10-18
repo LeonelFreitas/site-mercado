@@ -19,12 +19,12 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="bg-white rounded-full p-2">
-              <img src="/logo.webp" alt="Logo Mercado Tomás Dias" className="w-12 h-12" />
+              <img src="/logo.webp" alt="Logo Mercado Tomás Dias" className="w-16 h-16" />
             </div>
           </div>
           {/* Busca */}
           <div className="flex-1 mx-6">
-            <form className="flex items-center bg-white rounded-full px-4 py-2">
+            <form className="flex items-center bg-white rounded-full px-4 py-3">
               <input
                 type="text"
                 placeholder="O que você precisa?"
@@ -36,15 +36,15 @@ export function Header() {
             </form>
           </div>
           {/* Endereço - botão para abrir painel */}
-          <div className="flex items-center gap-2 text-white text-xs relative">
-            <FaStore size={16} />
-            <span className="hidden md:inline">Retirar na loja:</span>
+          <div className="flex items-center gap-2 text-white text-sm md:text-base relative">
+            <FaStore size={18} />
+            <span className="hidden md:inline font-medium">Retirar na loja:</span>
             <button
               type="button"
-              className="font-medium underline hover:text-yellow-300 transition flex items-center gap-1"
+              className="font-semibold underline hover:text-yellow-300 transition flex items-center gap-2 text-sm md:text-base"
               onClick={() => setShowPanel((v) => !v)}
             >
-              Estrada Mauá Maromba
+              <span className="text-sm md:text-base font-semibold">Estrada Mauá Maromba</span>
               {showPanel ? (
                 <IoChevronUp size={16} />
               ) : (
@@ -90,7 +90,7 @@ export function Header() {
                 style={{ minWidth: 120 }}
                 onClick={() => setSelected("loja")}
               >
-                <FaWalking className="mr-1" size={14} />
+                <FaWalking className="mr-1" size={20} />
                 Retirar na Loja
               </button>
             </div>
