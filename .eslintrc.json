@@ -5,9 +5,10 @@
   },
   "overrides": [
     {
-      "files": ["src/controllers/**", "src/routes/**", "src/middlewares/**", "src/*.js"],
+      "files": ["src/controllers/**", "src/routes/**", "src/middlewares/**", "src/**/*.js", "src/*.js"],
       "rules": {
-        "@typescript-eslint/no-require-imports": "off"
+        "@typescript-eslint/no-require-imports": "off",
+        "no-unused-vars": "off"
       }
     }
   ]

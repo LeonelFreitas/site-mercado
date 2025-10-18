@@ -1,0 +1,6 @@
+# Ignorar arquivos JS server-side que causam erro de rule require()
+src/controllers/
+src/routes/
+src/middlewares/
+src/*.js
+src/**/*.js
