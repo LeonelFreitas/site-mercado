@@ -10,6 +10,16 @@ type Product = {
   preco: string | null;
 };
 
+// Tipo esperado da API (mais estrito que `any`)
+type APIProduct = {
+  coditem: number;
+  descricao: string;
+  unidade: string;
+  fotoUrl?: string | null;
+  preco?: string | null;
+  unitario?: string | null;
+};
+
 export function ProductShelf() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,13 +28,14 @@ export function ProductShelf() {
   useEffect(() => {
     fetch("http://localhost:4000/promocoes/promocoes-ativas-detalhes")
       .then((res) => res.json())
-      .then((data) => {
-        const produtosComPreco = data.map((produto: any) => ({
+      .then((data: APIProduct[]) => {
+        const produtosComPreco = data.map((produto) => ({
           coditem: produto.coditem,
           descricao: produto.descricao,
           unidade: produto.unidade,
-          fotoUrl: produto.fotoUrl,
-          preco: produto.preco ?? null,
+          fotoUrl: produto.fotoUrl ?? null,
+          // aceita campo `preco` ou `unitario`
+          preco: produto.preco ?? produto.unitario ?? null,
         }));
         setProducts(produtosComPreco);
         // inicializa estado de imagens como false
@@ -43,14 +54,7 @@ export function ProductShelf() {
     setImgLoaded((s) => ({ ...s, [coditem]: true }));
   }
 
-  function formatPrice(preco: string | null) {
-    if (!preco) return null;
-    const n = Number(preco);
-    if (Number.isNaN(n)) return null;
-    return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-  }
-
-  // novo: retorna partes do preço para estilizar (ex: R$, 6.750, 75)
+  // removi `formatPrice` (não usado) e mantive apenas formatPriceParts
   function formatPriceParts(preco: string | null) {
     if (!preco) return null;
     const n = Number(preco);
@@ -62,7 +66,6 @@ export function ProductShelf() {
 
   function cleanDescricao(desc: string) {
     const s = (desc || "").trim();
-    // se começa com 4 ou mais dígitos (código) remove prefixo numérico + separadores até o texto
     if (/^\d{4,}[\d\.\-_\s\/]*[-–—:]?\s*/.test(s)) {
       return s.replace(/^\d{4,}[\d\.\-_\s\/]*[-–—:]?\s*/, "").trim();
     }
