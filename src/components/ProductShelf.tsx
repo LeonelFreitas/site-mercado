@@ -25,8 +25,34 @@ export function ProductShelf() {
   const [loading, setLoading] = useState(true);
   const [imgLoaded, setImgLoaded] = useState<Record<number, boolean>>({});
 
+  // useEffect(() => {
+  //   fetch("http://localhost:4000/promocoes/promocoes-ativas-detalhes")
+  //     .then((res) => res.json())
+  //     .then((data: APIProduct[]) => {
+  //       const produtosComPreco = data.map((produto) => ({
+  //         coditem: produto.coditem,
+  //         descricao: produto.descricao,
+  //         unidade: produto.unidade,
+  //         fotoUrl: produto.fotoUrl ?? null,
+  //         // aceita campo `preco` ou `unitario`
+  //         preco: produto.preco ?? produto.unitario ?? null,
+  //       }));
+  //       setProducts(produtosComPreco);
+  //       // inicializa estado de imagens como false
+  //       const initialLoaded: Record<number, boolean> = {};
+  //       produtosComPreco.forEach((p: Product) => (initialLoaded[p.coditem] = false));
+  //       setImgLoaded(initialLoaded);
+  //       setLoading(false);
+  //     })
+  //     .catch(() => {
+  //       setProducts([]);
+  //       setLoading(false);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    fetch("http://localhost:4000/promocoes/promocoes-ativas-detalhes")
+    // MUDAR ESTA LINHA - usar a URL do Tunnel, não localhost
+    fetch("https://api.seudominio.com/promocoes/promocoes-ativas-detalhes")
       .then((res) => res.json())
       .then((data: APIProduct[]) => {
         const produtosComPreco = data.map((produto) => ({
@@ -44,7 +70,8 @@ export function ProductShelf() {
         setImgLoaded(initialLoaded);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Erro ao carregar produtos:", error);
         setProducts([]);
         setLoading(false);
       });
