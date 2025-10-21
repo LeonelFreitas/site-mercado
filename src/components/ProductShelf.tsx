@@ -52,7 +52,7 @@ export function ProductShelf() {
 
   useEffect(() => {
     // MUDAR ESTA LINHA - usar a URL do Tunnel, não localhost
-    fetch("https://api.seudominio.com/promocoes/promocoes-ativas-detalhes")
+fetch("https://obvious-equity-stays-brand.trycloudflare.com/promocoes/promocoes-ativas-detalhes")
       .then((res) => res.json())
       .then((data: APIProduct[]) => {
         const produtosComPreco = data.map((produto) => ({
