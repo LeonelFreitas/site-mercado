@@ -52,7 +52,7 @@ export function ProductShelf() {
 
   useEffect(() => {
     // MUDAR ESTA LINHA - usar a URL do Tunnel, não localhost
-fetch("https://obvious-equity-stays-brand.trycloudflare.com/promocoes/promocoes-ativas-detalhes")
+    fetch("https://api.mercadothomasdias.com.br/promocoes/promocoes-ativas-detalhes")
       .then((res) => res.json())
       .then((data: APIProduct[]) => {
         const produtosComPreco = data.map((produto) => ({
@@ -157,7 +157,7 @@ fetch("https://obvious-equity-stays-brand.trycloudflare.com/promocoes/promocoes-
 
                 {/* preço (reduzi margem superior) */}
                 <div className="mt-1 flex items-end justify-between">
-                   <div className="flex flex-col">
+                  <div className="flex flex-col">
                     {priceParts ? (
                       <div className="flex items-end gap-3">
                         <div className="flex items-baseline gap-1">
