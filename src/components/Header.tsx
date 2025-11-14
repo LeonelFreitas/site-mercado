@@ -11,6 +11,7 @@ const loja = {
 export function Header() {
   const [showPanel, setShowPanel] = useState(false);
   const [selected, setSelected] = useState<"casa" | "loja">("loja");
+  
 
   return (
     <>
@@ -19,29 +20,35 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="bg-white rounded-full p-2">
-              <img src="/logo.webp" alt="Logo Mercado Tomás Dias" className="w-16 h-16" />
+              <img src="/logo.webp" alt="Logo Mercado Tomás Dias" className="w-10 h-10 md:w-16 md:h-16" />
             </div>
           </div>
-          {/* Busca */}
-          <div className="flex-1 mx-6">
-            <form className="flex items-center bg-white rounded-full px-4 py-3">
+          {/* Busca (visible on mobile and desktop) */}
+          <div className="flex-1 mx-3">
+            <form className="flex items-center bg-white rounded-full px-4 py-2 w-full">
               <input
                 type="text"
                 placeholder="O que você precisa?"
-                className="flex-1 outline-none bg-transparent text-blue-900 px-2"
+                className="flex-1 outline-none bg-transparent text-blue-900 px-2 text-sm"
               />
               <button type="submit" className="text-blue-900">
-                <FaSearch size={20} />
+                <FaSearch size={18} />
               </button>
             </form>
           </div>
           {/* Endereço - botão para abrir painel */}
           <div className="flex items-center gap-2 text-white text-sm md:text-base relative">
-            <FaStore size={18} />
-            <span className="hidden md:inline font-medium">Retirar na loja:</span>
+            <button
+              aria-label="Abrir opções de retirada"
+              className="p-2 rounded-md text-white hover:text-blue-200"
+              onClick={() => setShowPanel((v) => !v)}
+            >
+              <FaStore size={18} />
+            </button>
+            <span className="hidden sm:inline font-medium">Retirar na loja:</span>
             <button
               type="button"
-              className="font-semibold underline hover:text-blue-300 transition flex items-center gap-2 text-sm md:text-base"
+              className="hidden sm:flex font-semibold underline hover:text-blue-300 transition items-center gap-2 text-sm md:text-base"
               onClick={() => setShowPanel((v) => !v)}
             >
               <span className="text-sm md:text-base font-semibold">Estrada Mauá Maromba</span>
@@ -53,10 +60,11 @@ export function Header() {
             </button>
           </div>
         </div>
+        
       </header>
       {/* Painel lateral flutuante */}
       {showPanel && (
-        <div className="fixed top-24 right-30 z-50 w-[340px] bg-white rounded-xl shadow-lg border border-blue-900">
+        <div className="fixed top-20 left-4 right-4 sm:right-8 sm:left-auto z-50 w-auto sm:w-[340px] bg-white rounded-xl shadow-lg border border-blue-900">
           <div className="p-5 relative">
             <button
               className="absolute top-2 right-2 text-gray-400 hover:text-blue-900 text-lg"
