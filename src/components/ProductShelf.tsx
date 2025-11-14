@@ -80,14 +80,11 @@ export function ProductShelf() {
         setImgLoaded(initialLoaded);
         setLoading(false);
       } catch (error: any) {
-        // likely network / CORS / API down — show friendly message and fall back to sample data
+        // likely network / CORS / API down — show friendly message and do not render products
         console.error("Erro ao carregar produtos:", error);
         if (!mounted) return;
         setErrorMsg("Não foi possível carregar as promoções do servidor. Por favor, tente novamente mais tarde.");
-        setProducts(sampleProducts);
-        const initialLoaded: Record<number, boolean> = {};
-        sampleProducts.forEach((p) => (initialLoaded[p.coditem] = false));
-        setImgLoaded(initialLoaded);
+        // do not populate products or show skeletons; early-return UI will display the message
         setLoading(false);
       }
     })();
