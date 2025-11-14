@@ -43,7 +43,7 @@ export function Footer() {
 
           <div className="text-center sm:text-left">
             <h4 className="text-base sm:text-lg font-semibold mb-2">Siga-nos</h4>
-            <div className="flex items-center gap-3 mt-2">
+            <div className="flex items-center gap-3 mt-2 justify-center sm:justify-start">
               <a href="#" aria-label="Instagram" className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-slate-200 flex items-center justify-center hover:bg-slate-300">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="3"/><path d="M17.5 6.5h.01"/></svg>
               </a>
@@ -55,9 +55,27 @@ export function Footer() {
               </a>
             </div>
 
-            <div className="mt-4 sm:mt-6">
-              <a href="#top" className="block sm:inline-block bg-white text-black px-4 py-2 rounded shadow hover:opacity-95 text-sm text-center">
-                Voltar ao topo
+            <div className="pt-8 sm:pt-0 mt-4 sm:mt-6 flex justify-center sm:justify-start">
+              <a
+                href="#top"
+                className="inline-flex items-center gap-3 bg-white text-black px-4 py-3 sm:px-4 sm:py-2 rounded shadow hover:opacity-95 text-sm"
+                aria-label="Voltar ao topo"
+              >
+                <span>Voltar ao topo</span>
+                {/* Ícone: seta para cima, posicionado à direita e um pouco maior em telas pequenas */}
+                <svg
+                  className="w-5 h-5 sm:w-4 sm:h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 19V6" />
+                  <path d="M5 12l7-7 7 7" />
+                </svg>
               </a>
             </div>
           </div>
@@ -65,7 +83,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center gap-2 md:gap-0 justify-between text-xs text-black">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center gap-2 md:gap-0 justify-center md:justify-between text-xs text-black">
           <div className="text-center md:text-left">
             © {new Date().getFullYear()} Mercado Tomás Dias — Todos os direitos reservados.
           </div>
