@@ -14,7 +14,7 @@ export function Header() {
 
   return (
     <>
-      <header className="w-full bg-red-600">
+      <header className="w-full bg-[#1E3A8A]">
         <div className="max-w-6xl mx-auto flex items-center justify-between py-3 px-4">
           {/* Logo */}
           <div className="flex items-center gap-2">
@@ -28,9 +28,9 @@ export function Header() {
               <input
                 type="text"
                 placeholder="O que você precisa?"
-                className="flex-1 outline-none bg-transparent text-red-700 px-2"
+                className="flex-1 outline-none bg-transparent text-blue-900 px-2"
               />
-              <button type="submit" className="text-red-600">
+              <button type="submit" className="text-blue-900">
                 <FaSearch size={20} />
               </button>
             </form>
@@ -41,7 +41,7 @@ export function Header() {
             <span className="hidden md:inline font-medium">Retirar na loja:</span>
             <button
               type="button"
-              className="font-semibold underline hover:text-yellow-300 transition flex items-center gap-2 text-sm md:text-base"
+              className="font-semibold underline hover:text-blue-300 transition flex items-center gap-2 text-sm md:text-base"
               onClick={() => setShowPanel((v) => !v)}
             >
               <span className="text-sm md:text-base font-semibold">Estrada Mauá Maromba</span>

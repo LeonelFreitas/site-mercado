@@ -4,21 +4,44 @@ import { useState, useEffect, useRef } from "react";
 
 export function Banner() {
   const images = [
-    "https://s3.amazonaws.com/org255/files/banners_homes_omni_imagens/Banner-2300x450-5-pLGAlH.png",
-    "https://s3.amazonaws.com/org255/files/banners_homes_omni_imagens/Banner-720x525-4-Bamjha.png",
-    "https://s3.amazonaws.com/org255/files/banners_homes_omni_imagens/Banner-720x525-3-iFpEBH.png",
+    "https://i.ibb.co/yc5BS6xf/party-1200-x-540-px-1.png",
+    "https://i.ibb.co/yc5BS6xf/party-1200-x-540-px-1.png",
+    "https://i.ibb.co/yc5BS6xf/party-1200-x-540-px-1.png",
   ];
 
   const FALLBACK = "/banner-fallback.jpg"; // adicione uma imagem local em public/ como fallback
   const [current, setCurrent] = useState(0);
-  const [loaded, setLoaded] = useState<boolean[]>(() => Array(images.length).fill(false));
+  const [loaded, setLoaded] = useState<boolean[]>([]);
   const timerRef = useRef<number | null>(null);
+
+  // Mobile-only banner URL (use this single image on small screens)
+  const MOBILE_BANNER = "https://i.ibb.co/pj6WXpWy/party-1200-x-540-px-2.png";
+  const [isMobile, setIsMobile] = useState(false);
+  // Use the correct images array depending on viewport size
+  const effectiveImages = isMobile ? [MOBILE_BANNER] : images;
+
+  // Update isMobile on resize / orientation change
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 640px)");
+    const handle = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile((e as any).matches);
+    // set initial
+    setIsMobile(mq.matches);
+    if (mq.addEventListener) mq.addEventListener("change", handle as any);
+    else mq.addListener(handle as any);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", handle as any);
+      else mq.removeListener(handle as any);
+    };
+  }, []);
 
   // Preload with error handling + timeout fallback
   useEffect(() => {
+    // Ensure loaded state resets when the image list changes
+    setLoaded(Array(effectiveImages.length).fill(false));
     const timeouts: number[] = [];
 
-    images.forEach((src, idx) => {
+    effectiveImages.forEach((src, idx) => {
       let settled = false;
       const img = new Image();
       img.crossOrigin = "anonymous";
@@ -57,8 +80,7 @@ export function Banner() {
     return () => {
       timeouts.forEach((t) => window.clearTimeout(t));
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [effectiveImages]);
 
   // Automatic rotation (single timer controlled; reset on manual nav)
   function clearTimer() {
@@ -70,15 +92,17 @@ export function Banner() {
   function startTimer() {
     clearTimer();
     timerRef.current = window.setTimeout(() => {
-      setCurrent((p) => (p === images.length - 1 ? 0 : p + 1));
+      setCurrent((p) => (p === effectiveImages.length - 1 ? 0 : p + 1));
       startTimer(); // schedule next
     }, 10000);
   }
   useEffect(() => {
+    // Reset current slide when image set changes (e.g., switching to mobile single image)
+    setCurrent(0);
     startTimer();
     return clearTimer;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [effectiveImages.length]);
 
   function resetTimer() {
     startTimer();
@@ -89,11 +113,11 @@ export function Banner() {
     resetTimer();
   }
   function prevBanner() {
-    setCurrent((p) => (p === 0 ? images.length - 1 : p - 1));
+    setCurrent((p) => (p === 0 ? effectiveImages.length - 1 : p - 1));
     resetTimer();
   }
   function nextBanner() {
-    setCurrent((p) => (p === images.length - 1 ? 0 : p + 1));
+    setCurrent((p) => (p === effectiveImages.length - 1 ? 0 : p + 1));
     resetTimer();
   }
 
@@ -111,7 +135,7 @@ export function Banner() {
   }
 
   return (
-    <section className="w-full h-[340px] relative overflow-hidden flex items-center justify-center">
+    <section className="w-full h-[480px] md:h-[560px] lg:h-[540px] relative overflow-hidden flex items-center justify-center">
       <style>{`
         .banner-skeleton {
           position: absolute;
@@ -131,7 +155,7 @@ export function Banner() {
         .banner-visible { opacity: 1; z-index: 20; }
       `}</style>
 
-      {images.map((src, idx) => {
+      {effectiveImages.map((src, idx) => {
         const isActive = idx === current;
         return (
           <div
@@ -139,13 +163,11 @@ export function Banner() {
             className={`banner-slide ${isActive ? "banner-visible" : "banner-hidden"}`}
             aria-hidden={!isActive}
           >
-            {!loaded[idx] && isActive && <div className="banner-skeleton" />}
             <img
               src={src}
               alt={`Banner ${idx + 1}`}
               onError={(e) => handleImgError(e, idx)}
               className="banner-img"
-              style={{ opacity: loaded[idx] ? 1 : 0 }}
               draggable={false}
             />
           </div>
@@ -169,7 +191,7 @@ export function Banner() {
       </button>
 
       <div className="absolute left-0 right-0 bottom-4 flex justify-center items-center pb-4 z-40">
-        {images.map((_, idx) => (
+        {effectiveImages.map((_, idx) => (
           <button
             key={idx}
             className={`w-8 h-2 rounded-full mx-1 transition-all duration-300 ${idx === current ? "bg-blue-900" : "bg-gray-300 opacity-50"}`}

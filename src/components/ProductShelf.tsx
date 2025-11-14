@@ -23,6 +23,7 @@ type APIProduct = {
 export function ProductShelf() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [imgLoaded, setImgLoaded] = useState<Record<number, boolean>>({});
 
   // useEffect(() => {
@@ -51,30 +52,49 @@ export function ProductShelf() {
   // }, []);
 
   useEffect(() => {
-    // MUDAR ESTA LINHA - usar a URL do Tunnel, não localhost
-    fetch("https://api.mercadothomasdias.com.br/promocoes/promocoes-ativas-detalhes")
-      .then((res) => res.json())
-      .then((data: APIProduct[]) => {
+    // prefer using an env var for the API URL so it can be changed per-environment
+    const API_URL = process.env.NEXT_PUBLIC_PROMO_API ?? "https://api.mercadothomasdias.com.br/promocoes/promocoes-ativas-detalhes";
+
+    
+
+    let mounted = true;
+
+    (async () => {
+      try {
+        setLoading(true);
+        setErrorMsg(null);
+        const res = await fetch(API_URL, { method: "GET", mode: "cors" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: APIProduct[] = await res.json();
+        if (!mounted) return;
         const produtosComPreco = data.map((produto) => ({
           coditem: produto.coditem,
           descricao: produto.descricao,
           unidade: produto.unidade,
           fotoUrl: produto.fotoUrl ?? null,
-          // aceita campo `preco` ou `unitario`
           preco: produto.preco ?? produto.unitario ?? null,
         }));
         setProducts(produtosComPreco);
-        // inicializa estado de imagens como false
         const initialLoaded: Record<number, boolean> = {};
         produtosComPreco.forEach((p: Product) => (initialLoaded[p.coditem] = false));
         setImgLoaded(initialLoaded);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error: any) {
+        // likely network / CORS / API down — show friendly message and fall back to sample data
         console.error("Erro ao carregar produtos:", error);
-        setProducts([]);
+        if (!mounted) return;
+        setErrorMsg("Não foi possível carregar as promoções do servidor. Por favor, tente novamente mais tarde.");
+        setProducts(sampleProducts);
+        const initialLoaded: Record<number, boolean> = {};
+        sampleProducts.forEach((p) => (initialLoaded[p.coditem] = false));
+        setImgLoaded(initialLoaded);
         setLoading(false);
-      });
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   function handleImgLoad(coditem: number) {
@@ -99,8 +119,21 @@ export function ProductShelf() {
     return s;
   }
 
+  // If there was an error fetching promos, show only the message (no skeleton/cards)
+  if (errorMsg) {
+    return (
+      <section className="product-shelf max-w-7xl mx-auto px-4 pb-16 pt-10">
+        <div className="max-w-7xl mx-auto mb-4 px-4">
+          <div className="rounded-md bg-yellow-50 border border-yellow-200 p-3 text-sm text-yellow-800">
+            {errorMsg}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="max-w-7xl mx-auto px-4 pb-16 pt-10">
+    <section className="product-shelf max-w-7xl mx-auto px-4 pb-16 pt-10">
       <div className="flex items-center mb-6">
         <h2 className="text-2xl md:text-3xl font-serif font-extrabold tracking-tight text-gray-800 flex-1">
           PROMOÇÕES DO DIA
@@ -183,8 +216,12 @@ export function ProductShelf() {
         )}
       </div>
 
-      {/* shimmer keyframes para tailwind-free environments */}
+      {/* shimmer keyframes para tailwind-free environments + fonts */}
       <style>{`
+  /* Importar fonts (Montserrat para títulos, Poppins para corpo) */
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@300;400;600&display=swap');
+
+        /* shimmer */
         @keyframes shimmer {
           0% { background-position: -200% 0; }
           100% { background-position: 200% 0; }
@@ -194,8 +231,29 @@ export function ProductShelf() {
           background-size: 200% 100%;
           animation: shimmer 1.2s linear infinite;
         }
+
+        /* tamanho helpers */
         .max-w-28 { max-width: 7rem; } /* 112px */
         .max-h-28 { max-height: 7rem; }
+
+        /* Tipografia customizada apenas para este componente */
+        .product-shelf {
+          font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+        .product-shelf h2 {
+          /* Use a modern, compact sans-serif for headings — works better with ALL-CAPS */
+          font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+          font-weight: 700;
+          /* Slight positive tracking for uppercase headings to improve legibility */
+          letter-spacing: 0.6px;
+          /* Prevent overly tight line-height on large headings */
+          line-height: 1.05;
+        }
+        /* pequenos ajustes para nomes e preços */
+        .product-shelf .text-sm,
+        .product-shelf .line-clamp-2 {
+          font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
       `}</style>
     </section>
   );
