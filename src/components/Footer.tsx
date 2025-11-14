@@ -48,7 +48,10 @@ export function Footer() {
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="3"/><path d="M17.5 6.5h.01"/></svg>
               </a>
               <a href="#" aria-label="YouTube" className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-slate-200 flex items-center justify-center hover:bg-slate-300">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M10 15l5.5-3L10 9v6z"/></svg>
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.95C18.88 4 12 4 12 4s-6.88 0-8.59.47A2.78 2.78 0 001.46 6.42 29.8 29.8 0 001 12a29.8 29.8 0 00.46 5.58 2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29.8 29.8 0 0023 12a29.8 29.8 0 00-.46-5.58z"/>
+                  <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+                </svg>
               </a>
               <a href="#" aria-label="Facebook" className="w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-slate-200 flex items-center justify-center hover:bg-slate-300">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 2h-3a4 4 0 00-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 011-1h3z"/></svg>
@@ -88,8 +91,16 @@ export function Footer() {
             © {new Date().getFullYear()} Mercado Tomás Dias — Todos os direitos reservados.
           </div>
           <div className="text-center md:text-right">
-            <span className="hidden md:inline">Desenvolvido por •</span>
-            <span className="ml-1 font-medium text-black">Leonel Freitas</span>
+            <a
+              href="https://wa.me/5524999974142?text=Gostaria%20de%20solicitar%20um%20trabalho"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Enviar WhatsApp para Leonel Freitas"
+              className="inline-flex items-center gap-1 font-medium text-black hover:underline"
+            >
+              <span className="hidden md:inline">Desenvolvido por •</span>
+              <span>Leonel Freitas</span>
+            </a>
           </div>
         </div>
       </div>

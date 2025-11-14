@@ -19,8 +19,8 @@ export function Header() {
         <div className="max-w-6xl mx-auto flex items-center justify-between py-3 px-4">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="bg-white rounded-full p-2 overflow-hidden">
-              <img src="/logo.webp" alt="Logo Mercado Tomás Dias" className="w-10 h-10 md:w-16 md:h-16 rounded-full object-cover" />
+            <div className="bg-white rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 p-1">
+              <img src="/logo.webp" alt="Logo Mercado Tomás Dias" className="w-full h-full rounded-full object-cover" />
             </div>
           </div>
           {/* Busca (visible on mobile and desktop) */}
